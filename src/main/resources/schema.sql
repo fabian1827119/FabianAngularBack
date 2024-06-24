@@ -7,7 +7,7 @@ CREATE TABLE users (
   password VARCHAR(100) NOT NULL,
   roles VARCHAR(50) NOT NULL,
   photoUserd VARCHAR(250) ,
-  creation VARCHAR(250) NOT NULL,
+  creation VARCHAR(250) ,
   update VARCHAR(250)  NOT NULL,
   active BOOLEAN,
   UNIQUE (username)

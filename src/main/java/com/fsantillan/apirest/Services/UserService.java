@@ -10,5 +10,6 @@ public interface UserService {
     UserDto GetUser(Integer id);
     List<UserDto> GetUsers();
     String UpdateUser(UserDto user);
+    void DeleteUser(int id);
 
 }

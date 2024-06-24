@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 // import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+// import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +25,7 @@ import com.fsantillan.apirest.common.Dto.UserDto;
 import com.fsantillan.apirest.common.Models.User;
 
 import lombok.RequiredArgsConstructor;
-import lombok.var;
+// import lombok.var;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -80,8 +81,8 @@ public class UsersControllers {
         // return  ResponseEntity.ok("User created");
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<String> update(@RequestParam("users") String users,
+    @PutMapping("/{id}")
+    public ResponseEntity<String> update(@PathVariable("id") int id, @RequestParam("users") String users,
             @RequestParam("photoUser") MultipartFile photoUser) throws IOException {
                 ObjectMapper objectMapper = new ObjectMapper();
                 UserDto user=objectMapper.readValue(users, UserDto.class);
@@ -97,8 +98,14 @@ public class UsersControllers {
 
     // @DeleteMapping("/users/{id}")
     @DeleteMapping("{id}")
-    public String delete(@PathVariable("id") int id) {
-        return "Delete user with id: " + id;
+    public ResponseEntity<String> delete(@PathVariable("id") int id) {
+
+        try {
+            userService.DeleteUser(id);
+            return ResponseEntity.ok("Delete user with id: " + id);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

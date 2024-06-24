@@ -114,28 +114,45 @@ public class UserServiceImpl implements UserService{
     @Override
     public String UpdateUser(UserDto user) {
         try {
-
-            User newUser = User.builder()
-                .names(user.getNames())
-                .lastName(user.getLastName())
-                .secondLastName(user.getSecondLastName())
-                .username(user.getUsername())
-                // .password(passwordEncoder.encode(user.getPassword()))
-                .password(user.getPassword())
-                .roles(user.getRoles())
-                .photoUser(user.getPhotoUserString())
-                .creation(Helpers.getDateTime())
-                .update(Helpers.getDateTime())
-                .active(true)
-                .build();
-
-            User savedUser = userRepository.save(newUser);
-            return "Usuario actualizado correctamente";
-            
+            User userById = userRepository.findById(user.getId()).orElse(null);
+    
+            if (userById != null) {
+                userById.setNames(user.getNames());
+                userById.setLastName(user.getLastName());
+                userById.setSecondLastName(user.getSecondLastName());
+                userById.setUsername(user.getUsername());
+                userById.setPassword(user.getPassword());
+                userById.setRoles(user.getRoles());
+                userById.setPhotoUser(user.getPhotoUserString());
+                userById.setUpdate(Helpers.getDateTime());
+                // userById.setActive(true);
+    
+                User savedUser = userRepository.save(userById);
+                return "Usuario actualizado correctamente";
+            } else {
+                return "Usuario no encontrado";
+            }
         } catch (Exception e) {
             System.out.println("Error actualizar usuario");
         }
         return null;
+    }
+
+
+
+    @Override
+    public void DeleteUser(int id) {
+        try {
+            User user = userRepository.findById(id).orElse(null);
+            if (user == null) {
+                throw new RuntimeException("No se encontro el usuario");
+            }else{
+                userRepository.deleteById(user.getId());
+            }
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar usuario", e);
+        }
     }
 
 
