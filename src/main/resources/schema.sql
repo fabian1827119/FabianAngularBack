@@ -5,10 +5,10 @@ CREATE TABLE users (
   secondLastNamed VARCHAR(100) ,
   username VARCHAR(100) NOT NULL,
   password VARCHAR(100) NOT NULL,
-  roles VARCHAR(50) NOT NULL,
+  roles VARCHAR(50) ,
   photoUserd VARCHAR(250) ,
   creation VARCHAR(250) ,
-  update VARCHAR(250)  NOT NULL,
+  update VARCHAR(250) ,
   active BOOLEAN,
   UNIQUE (username)
 );
